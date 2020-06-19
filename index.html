@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<head>
+</head>
+<body>   
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId            : '362507484613704',
+        autoLogAppEvents : true,
+        xfbml            : true,
+        version          : 'v7.0'
+      });
+    };
+  </script>
+    <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+  <button onclick="fblogin()">LOGIN</button>
+  <button onclick="share()">DEL</button>
+  <button onclick="hentNavn()">Tjek Login</button>
+  <p id="logindata"></p>
+  <script>
+    console.log("Hi i'm here")
+
+function share() {
+    FB.ui({
+    method: 'share',
+    href: 'https://developers.facebook.com/docs/'
+  }, function(response){});
+}
+
+function fblogin() {
+  FB.login(function(response) {
+  console.log("Starting Login");
+  FB.api('/me', function(response) {
+       console.log(response);
+       console.log(response.name);
+     });
+}, {scope: 'email,user_likes,pages_read_engagement'});
+}
+
+console.log(FB.api('/me'))
+
+function hentNavn() {
+  FB.getLoginStatus((
+    function(response){
+    if (response.status == "unknown" || response.status == "not_authorized")
+    {
+      document.getElementById("logindata").innerHTML = ("Loginfejl, prøv igen");
+    }
+    else 
+    {
+      FB.api('/me', function(response) {
+      document.getElementById("logindata").innerHTML = ("Du er logget ind som: " + response.name);
+      })
+  ))
+    }
+  }
+}
+</script>
+  
+</body>
